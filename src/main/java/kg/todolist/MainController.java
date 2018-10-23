@@ -10,12 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MainController {
 
-    @Value("${home.message}")
-    private String message;
-
     @GetMapping("/")
-    public String welcome(Map<String, Object> model) {
-        model.put("message", this.message);
+    public String welcome() {
         return "/home";
     }
 

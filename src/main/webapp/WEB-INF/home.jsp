@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <h1>Welcome to ${message} </h1> 
+    <h1>[ TODO list ]</h1>
 </body>
 
 </html>
