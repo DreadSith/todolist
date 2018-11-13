@@ -22,18 +22,42 @@
                     <td>${list_item.title }</td>
                     <td>${list_item.item }</td>
                     <td>${list_item.status }</td>
-                    <td><button type="button" class="edit">Edit</button><button type="button" class="del">Delete</button></td>
+                    <td><button type="button" class="edit">Edit</button><button type="button" class="del"  id="${list_item.ID }">Delete</button></td>
                 </tr>
             </c:forEach>
+                <tr>
+                    <td><input id="party" type="datetime-local" name="partydate" min="2018-13-01T08:30"></td>
+                    <td><input type="text" name="title"></td>
+                    <td><textarea name="comment">Enter text here...</textarea></td>
+                    <td>
+                        <select name="status">
+                        <option value="done">Done</option>
+                        <option value="inprogress">In Progress</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                    </td>
+                    <td><button type="button" class="submit">Submit</button></td>
+                </tr>
         </table>
     <script>
-        $(document).ready(function(){
 
-            $("#tbUser").on('click','.btnDelete',function(){
-                $(this).closest('tr').remove();
+        $(document).ready(function() {
+// crating new click event for save button
+            $(".del").click(function() {
+                var id = +this.id;
+                $.ajax({
+                    url: "/items/" + id,
+                    type: "delete",
+                    data: {
+                        id : id,
+                    },
+                    success : function(data){
+                        alert("Data deleted successfully."); // alerts the response from jsp
+                        location.reload();
+                    }
+                });
             });
         });
-
     </script>
     </body>
 </html>

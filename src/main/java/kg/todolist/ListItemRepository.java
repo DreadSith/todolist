@@ -1,41 +1,44 @@
 package kg.todolist;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface ListItemRepository extends CrudRepository<ListItem, Integer> {
+import java.util.List;
 
-    @Override
-    <S extends ListItem> S save(S s);
-
-    @Override
-    <S extends ListItem> Iterable<S> saveAll(Iterable<S> iterable);
-
-/* I cri, cuz you can only use this in Java 1.8
-    @Override
-    Optional<ListItem> findById(Integer integer);
-*/
+public interface ListItemRepository extends JpaRepository<ListItem, Integer> {
 
     @Override
-    boolean existsById(Integer integer);
+    List<ListItem> findAll();
 
     @Override
-    Iterable<ListItem> findAll();
+    List<ListItem> findAll(Sort sort);
 
     @Override
-    Iterable<ListItem> findAllById(Iterable<Integer> iterable);
+    List<ListItem> findAllById(Iterable<Integer> iterable);
 
     @Override
-    long count();
+    <S extends ListItem> List<S> saveAll(Iterable<S> iterable);
 
     @Override
-    void deleteById(Integer integer);
+    void flush();
 
     @Override
-    void delete(ListItem listItem);
+    <S extends ListItem> S saveAndFlush(S s);
 
     @Override
-    void deleteAll(Iterable<? extends ListItem> iterable);
+    void deleteInBatch(Iterable<ListItem> iterable);
 
     @Override
-    void deleteAll();
+    void deleteAllInBatch();
+
+    @Override
+    ListItem getOne(Integer integer);
+
+    @Override
+    <S extends ListItem> List<S> findAll(Example<S> example);
+
+    @Override
+    <S extends ListItem> List<S> findAll(Example<S> example, Sort sort);
 }

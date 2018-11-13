@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class MainController {
+public class TodoController {
+
     @Autowired
     private ListItemRepository items;
 
     @GetMapping("/")
     public String welcome(ModelMap modelMap) {
-      //  modelMap.pu("list_items", items.findAll());
         modelMap.put("items", items.findAll());
         return "/home";
     }
