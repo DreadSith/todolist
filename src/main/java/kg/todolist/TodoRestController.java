@@ -1,6 +1,7 @@
 package kg.todolist;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,6 +30,14 @@ public class TodoRestController {
         return items.save(newItem);
     }
 
+    @PutMapping(value = "/items/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ListItem updatedItem(@RequestBody ListItem updatedItem, @PathVariable Integer id){
+        ListItem currentItem = items.getOne(id);
+        currentItem.setDueDate(updatedItem.getDueDate());
+        currentItem.setItem(updatedItem.getItem());
+        currentItem.setStatus(updatedItem.getStatus());
+        currentItem.setTitle(updatedItem.getTitle());
 
-
+        return items.saveAndFlush(currentItem);
+    }
 }

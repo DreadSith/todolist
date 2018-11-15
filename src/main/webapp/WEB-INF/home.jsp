@@ -5,6 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     </head>
 
     <body>
@@ -39,33 +40,30 @@
                         <option value="Pending">Pending</option>
                     </select>
                     </td>
-                    <td><button type="button" class="submit" style="display: block; margin: auto;">Submit</button></td>
+                    <td><button type="button" class="submit" id=0 style="display: block; margin: auto;">Submit</button></td>
                 </tr>
             </form>
         </table>
     <script>
 
         $(document).ready(function() {
-// crating new click event for save button
             $(".del").click(function(e) {
                 e.preventDefault();
                 var id = +this.id;
                 $.ajax({
                     url: "/items/" + id,
                     type: "DELETE",
-                    data: {
-                        id : id,
-                    },
                     success : function(data){
-                        alert("Data deleted successfully."); // alerts the response from jsp
+                        alert("Data deleted successfully.");
                         location.reload();
                     }
                 });
             });
 
-            // crating new click event for save button
             $(".submit").click(function(e) {
                 e.preventDefault();
+                var id = +this.id
+                alert(id);
 
                 var dueDateT = document.forms["list_item"]["dueDate"].value;
                 var dueDate = dueDateT.split('T');
@@ -76,27 +74,72 @@
                 var item = document.forms["list_item"]["item"].value;
                 var status = document.forms["list_item"]["status"].value;
 
-                var jsonObj = {
-                    "dueDate": datetime,
-                    "title": title,
-                    "item": item,
-                    "status": status,
-                }
+                alert(jsonString);
 
-                var jsonString = JSON.stringify(jsonObj);
+       if(id == 0) {
 
+           var jsonObj = {
+               "dueDate": datetime,
+               "title": title,
+               "item": item,
+               "status": status,
+           }
+
+           var jsonString = JSON.stringify(jsonObj);
+
+           $.ajax({
+               url: "/items",
+               type: "POST",
+               contentType: 'application/json',
+               data: jsonString,
+               success: function (data) {
+                   alert("Data added successfully.");
+                   location.reload();
+               }
+           });
+       } else {
+
+           var jsonObj = {
+               "dueDate": datetime,
+               "title": title,
+               "item": item,
+               "status": status,
+               "id": id,
+           }
+
+           var jsonString = JSON.stringify(jsonObj);
+
+           $.ajax({
+               url: "/items/" + id,
+               type: "PUT",
+               contentType: 'application/json',
+               data: jsonString,
+               success: function (data) {
+                   alert("Data updated successfully.");
+                   location.reload();
+               }
+           });
+       }
+
+            });
+
+            $(".edit").click(function(e) {
+                e.preventDefault();
+                var id = +this.id;
                 $.ajax({
-                    url: "/items",
-                    type: "POST",
-                    contentType: 'application/json',
-                    data: jsonString,
+                    url: "/items/" + id,
+                    type: "GET",
+                    dataType:'json',
                     success : function(data){
-                        alert("Data added successfully."); // alerts the response from jsp
-                        location.reload();
+                        var mydate = new Date(data.dueDate);
+                        $('#dueDate').val(moment(mydate).format("YYYY-MM-DDThh:mm"));
+                        $('#title').val(data.title);
+                        $('#item').val(data.item);
+                        $('#status').val(data.status);
+                        $('.submit').attr('id', id);
                     }
                 });
             });
-
 
         });
     </script>

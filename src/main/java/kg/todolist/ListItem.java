@@ -64,5 +64,16 @@ public class ListItem {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "ListItem{" +
+                "ID=" + ID +
+                ", dueDate=" + dueDate +
+                ", title='" + title + '\'' +
+                ", item='" + item + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }
 
