@@ -1,0 +1,34 @@
+h1 {
+    text-align: center;
+}
+
+.submit {
+    display: block;
+    width: 93px;
+    margin: auto;
+}
+
+.clear {
+    display: block;
+    width: 93px;
+    margin: auto;
+}
+
+#item {
+    border: none;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#tbitems {
+    text-align: center;
+}
+
+.statusColor {
+    font-weight: bold;
+}
+
+
+
